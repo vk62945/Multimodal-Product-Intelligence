@@ -1,0 +1,22 @@
+{
+    "Bags": 0,
+    "Belts": 1,
+    "Bottomwear": 2,
+    "Dress": 3,
+    "Eyewear": 4,
+    "Flip Flops": 5,
+    "Fragrance": 6,
+    "Innerwear": 7,
+    "Jewellery": 8,
+    "Lips": 9,
+    "Loungewear and Nightwear": 10,
+    "Makeup": 11,
+    "Nails": 12,
+    "Sandal": 13,
+    "Saree": 14,
+    "Shoes": 15,
+    "Socks": 16,
+    "Topwear": 17,
+    "Wallets": 18,
+    "Watches": 19
+}
