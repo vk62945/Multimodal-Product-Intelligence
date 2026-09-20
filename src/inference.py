@@ -26,6 +26,17 @@ def load_label_mapping():
 
 LABEL_MAPPING = load_label_mapping()
 
+def get_confidence_level(confidence):
+    """Convert prediction probability into a simple confidence level."""
+
+    if confidence >= 0.90:
+        return "Very High"
+    elif confidence >= 0.70:
+        return "High"
+    elif confidence >= 0.50:
+        return "Moderate"
+    else:
+        return "Low"
 
 def predict(image_path, product_text, top_k=5):
     """
@@ -86,6 +97,7 @@ def predict(image_path, product_text, top_k=5):
     confidence = top_probabilities[0]
 
     predicted_category = LABEL_MAPPING[predicted_index]
+    confidence_level = get_confidence_level(confidence)
 
     top_predictions = []
 
@@ -102,8 +114,9 @@ def predict(image_path, product_text, top_k=5):
         )
 
     return {
-        "predicted_class_index": predicted_index,
-        "predicted_category": predicted_category,
-        "confidence": confidence,
-        "top_k": top_predictions,
+    "predicted_class_index": predicted_index,
+    "predicted_category": predicted_category,
+    "confidence": confidence,
+    "confidence_level": confidence_level,
+    "top_k": top_predictions,
     }
