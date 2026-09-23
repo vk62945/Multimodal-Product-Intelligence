@@ -56,6 +56,10 @@ product_text = st.text_input(
 if product_text.strip():
     st.success("Product information entered.")
 
+# --------------------------------------------------
+# Prediction Button
+# --------------------------------------------------
+
 st.subheader("3. Product Classification")
 
 predict_button = st.button(
@@ -66,15 +70,33 @@ predict_button = st.button(
 
 if predict_button:
 
+    # Validate image
     if uploaded_image is None:
-        st.warning("Please upload a product image first.")
+        st.warning(
+            "Please upload a product image before predicting."
+        )
 
+    # Validate text
     elif not product_text.strip():
-        st.warning("Please enter a product name or description.")
+        st.warning(
+            "Please enter a product name or description before predicting."
+        )
+
+    # Validate image type
+    elif uploaded_image.type not in [
+        "image/jpeg",
+        "image/png",
+    ]:
+        st.error(
+            "Unsupported image format. "
+            "Please upload a JPG, JPEG, or PNG image."
+        )
 
     else:
 
-        with st.spinner("Analyzing product image and text..."):
+        with st.spinner(
+            "Analyzing product image and text..."
+        ):
 
             try:
 
@@ -84,19 +106,28 @@ if predict_button:
                     top_k=5,
                 )
 
+                st.session_state[
+                    "prediction_result"
+                ] = result
+
                 st.success(
                     "Prediction completed successfully."
                 )
 
-                st.session_state["prediction_result"] = result
+            except ValueError as error:
 
-            except Exception as error:
-
-                st.error(
-                    "An error occurred while processing the product."
+                st.warning(
+                    f"Input validation error: {error}"
                 )
 
-                st.exception(error)
+            except Exception:
+
+                st.error(
+                    "Something went wrong while "
+                    "processing the product. "
+                    "Please try again with a valid image "
+                    "and product description."
+                )
 
 if "prediction_result" in st.session_state:
 
