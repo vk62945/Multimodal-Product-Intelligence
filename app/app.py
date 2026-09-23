@@ -18,6 +18,22 @@ st.markdown(
     """
 )
 
+st.subheader("1. Upload Product Image")
+
+uploaded_image = st.file_uploader(
+    "Choose a product image",
+    type=["jpg", "jpeg", "png"],
+    help="Upload a product image for classification.",
+)
+
+if uploaded_image is not None:
+
+    st.image(
+        uploaded_image,
+        caption="Uploaded Product Image",
+        width=400,
+    )
+
 with st.sidebar:
 
     st.header("About the Project")
