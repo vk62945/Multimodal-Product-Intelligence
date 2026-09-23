@@ -33,6 +33,17 @@ if uploaded_image is not None:
         caption="Uploaded Product Image",
         width=400,
     )
+    
+st.subheader("2. Enter Product Information")
+
+product_text = st.text_input(
+    "Product name or description",
+    placeholder="e.g. Peter England Men Party Blue Jeans",
+    help="Enter the product name or a short product description.",
+)
+
+if product_text.strip():
+    st.success("Product information entered.")
 
 with st.sidebar:
 
