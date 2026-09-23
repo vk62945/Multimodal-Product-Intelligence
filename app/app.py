@@ -3,7 +3,6 @@ from pathlib import Path
 
 import streamlit as st
 
-
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 if str(PROJECT_ROOT) not in sys.path:
@@ -74,20 +73,44 @@ if predict_button:
         st.warning("Please enter a product name or description.")
 
     else:
+
         with st.spinner("Analyzing product image and text..."):
+
             try:
+
                 result = predict(
                     image_path=uploaded_image,
                     product_text=product_text,
                     top_k=5,
                 )
-                st.success("Prediction completed successfully.")
+
+                st.success(
+                    "Prediction completed successfully."
+                )
+
                 st.session_state["prediction_result"] = result
+
             except Exception as error:
+
                 st.error(
                     "An error occurred while processing the product."
                 )
+
                 st.exception(error)
+
+if "prediction_result" in st.session_state:
+
+    result = st.session_state["prediction_result"]
+
+    st.divider()
+
+    st.subheader("Prediction Result")
+
+    predicted_category = result["predicted_category"]
+
+    st.markdown(
+        f"### 🏷️ {predicted_category}"
+    )
 
 with st.sidebar:
 
