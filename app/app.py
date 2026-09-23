@@ -107,10 +107,26 @@ if "prediction_result" in st.session_state:
     st.subheader("Prediction Result")
 
     predicted_category = result["predicted_category"]
+    confidence = result["confidence"]
+    confidence_level = result["confidence_level"]
 
     st.markdown(
         f"### 🏷️ {predicted_category}"
     )
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.metric(
+            "Confidence",
+            f"{confidence:.2%}",
+        )
+
+    with col2:
+        st.metric(
+            "Confidence Level",
+            confidence_level,
+        )
 
 with st.sidebar:
 
