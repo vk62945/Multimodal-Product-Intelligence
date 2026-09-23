@@ -8,7 +8,6 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-
 from src.inference import predict
 
 st.set_page_config(
@@ -44,6 +43,7 @@ if uploaded_image is not None:
         caption="Uploaded Product Image",
         width=400,
     )
+
 
 st.subheader("2. Enter Product Information")
 
@@ -127,6 +127,26 @@ if "prediction_result" in st.session_state:
             "Confidence Level",
             confidence_level,
         )
+
+    st.markdown("#### Top Predictions")
+
+    top_predictions = result["top_k"]
+
+    top_k_table = []
+
+    for rank, prediction in enumerate(
+        top_predictions,
+        start=1,
+    ):
+        top_k_table.append(
+            {
+                "Rank": rank,
+                "Category": prediction["category"],
+                "Probability": f"{prediction['probability']:.4%}",
+            }
+        )
+
+    st.table(top_k_table)
 
 with st.sidebar:
 
