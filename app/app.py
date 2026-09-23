@@ -3,10 +3,13 @@ from pathlib import Path
 
 import streamlit as st
 
+
+# Add project root to Python path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
+
 
 from src.inference import predict
 
@@ -21,46 +24,107 @@ st.title("🛍️ Multimodal Product Intelligence")
 
 st.markdown(
     """
-    ### AI-powered product category classification
-
-    This application uses both **product images** and **product text**
-    to predict the product category using a multimodal deep learning model.
+    Use **product imagery + product text** to classify products
+    into one of 20 product categories using a multimodal deep
+    learning model.
     """
 )
 
-st.subheader("1. Upload Product Image")
+st.divider()
 
-uploaded_image = st.file_uploader(
-    "Choose a product image",
-    type=["jpg", "jpeg", "png"],
-    help="Upload a product image for classification.",
-)
+with st.sidebar:
 
-if uploaded_image is not None:
+    st.header("About the Project")
 
-    st.image(
-        uploaded_image,
-        caption="Uploaded Product Image",
-        width=400,
+    st.markdown(
+        """
+        ### Model Architecture
+
+        **Image Branch**
+        - ResNet-50
+        - Transfer Learning
+        - Image Embeddings
+
+        **Text Branch**
+        - DistilBERT
+        - Transformer Embeddings
+
+        **Fusion**
+        - Feature Projection
+        - Multimodal Feature Fusion
+        - 20-Class Classification
+        """
     )
 
+    st.divider()
 
-st.subheader("2. Enter Product Information")
+    st.markdown(
+        """
+        ### Technologies
 
-product_text = st.text_input(
-    "Product name or description",
-    placeholder="e.g. Peter England Men Party Blue Jeans",
-    help="Enter the product name or a short product description.",
+        - PyTorch
+        - Torchvision
+        - Hugging Face Transformers
+        - Streamlit
+        - Python
+        """
+    )
+
+    st.divider()
+
+    st.caption(
+        "Multimodal Product Intelligence System"
+    )
+
+st.subheader("Product Information")
+
+input_col1, input_col2 = st.columns(
+    [1.2, 1],
+    gap="large",
 )
 
-if product_text.strip():
-    st.success("Product information entered.")
+with input_col1:
 
-# --------------------------------------------------
-# Prediction Button
-# --------------------------------------------------
+    st.markdown("#### 🖼️ Product Image")
 
-st.subheader("3. Product Classification")
+    uploaded_image = st.file_uploader(
+        "Upload a product image",
+        type=["jpg", "jpeg", "png"],
+        help="Supported formats: JPG, JPEG, PNG.",
+    )
+
+    if uploaded_image is not None:
+
+        st.image(
+            uploaded_image,
+            caption="Uploaded Product Image",
+            width=400,
+        )
+
+with input_col2:
+
+    st.markdown("#### 📝 Product Description")
+
+    product_text = st.text_area(
+        "Product name or description",
+        placeholder=(
+            "Example:\n"
+            "Peter England Men Party Blue Jeans"
+        ),
+        height=150,
+        help="Enter the product name or a short product description.",
+    )
+
+    if product_text.strip():
+
+        st.success(
+            "Product information entered.",
+            icon="✅",
+        )
+
+st.divider()
+
+st.subheader("Product Classification")
 
 predict_button = st.button(
     "🔍 Predict Product Category",
@@ -68,25 +132,27 @@ predict_button = st.button(
     use_container_width=True,
 )
 
+
 if predict_button:
 
-    # Validate image
     if uploaded_image is None:
+
         st.warning(
             "Please upload a product image before predicting."
         )
 
-    # Validate text
     elif not product_text.strip():
+
         st.warning(
-            "Please enter a product name or description before predicting."
+            "Please enter a product name or description "
+            "before predicting."
         )
 
-    # Validate image type
     elif uploaded_image.type not in [
         "image/jpeg",
         "image/png",
     ]:
+
         st.error(
             "Unsupported image format. "
             "Please upload a JPG, JPEG, or PNG image."
@@ -95,7 +161,7 @@ if predict_button:
     else:
 
         with st.spinner(
-            "Analyzing product image and text..."
+            "sAnalyzing product image and text..."
         ):
 
             try:
@@ -123,10 +189,9 @@ if predict_button:
             except Exception:
 
                 st.error(
-                    "Something went wrong while "
-                    "processing the product. "
-                    "Please try again with a valid image "
-                    "and product description."
+                    "Something went wrong while processing "
+                    "the product. Please try again with a "
+                    "valid image and product description."
                 )
 
 if "prediction_result" in st.session_state:
@@ -137,29 +202,49 @@ if "prediction_result" in st.session_state:
 
     st.subheader("Prediction Result")
 
-    predicted_category = result["predicted_category"]
-    confidence = result["confidence"]
-    confidence_level = result["confidence_level"]
+    predicted_category = result[
+        "predicted_category"
+    ]
 
-    st.markdown(
-        f"### 🏷️ {predicted_category}"
+    confidence = result[
+        "confidence"
+    ]
+
+    confidence_level = result[
+        "confidence_level"
+    ]
+
+    result_col1, result_col2 = st.columns(
+        [1.5, 1],
+        gap="large",
     )
 
-    col1, col2 = st.columns(2)
+    with result_col1:
 
-    with col1:
+        st.markdown(
+            "### 🏷️ Predicted Category"
+        )
+
+        st.markdown(
+            f"# {predicted_category}"
+        )
+
+    with result_col2:
+
         st.metric(
             "Confidence",
             f"{confidence:.2%}",
         )
 
-    with col2:
-        st.metric(
-            "Confidence Level",
-            confidence_level,
+        st.caption(
+            f"Confidence Level: {confidence_level}"
         )
 
-    st.markdown("#### Top Predictions")
+        st.progress(
+            min(confidence, 1.0)
+        )
+
+    st.markdown("### Top Predictions")
 
     top_predictions = result["top_k"]
 
@@ -169,41 +254,24 @@ if "prediction_result" in st.session_state:
         top_predictions,
         start=1,
     ):
+
         top_k_table.append(
             {
                 "Rank": rank,
-                "Category": prediction["category"],
-                "Probability": f"{prediction['probability']:.4%}",
+                "Category": prediction[
+                    "category"
+                ],
+                "Probability": (
+                    f"{prediction['probability']:.4%}"
+                ),
             }
         )
 
     st.table(top_k_table)
 
-with st.sidebar:
+st.divider()
 
-    st.header("About the Project")
-
-    st.markdown(
-        """
-        **Multimodal Product Intelligence System**
-
-        This system combines:
-
-        - 🖼️ ResNet-50 for image understanding
-        - 📝 DistilBERT for text understanding
-        - 🔗 Multimodal feature fusion
-        - 🧠 PyTorch-based inference
-
-        **Model Output**
-
-        - Predicted category
-        - Confidence score
-        - Top-K predictions
-        """
-    )
-
-    st.divider()
-
-    st.caption(
-        "Multimodal Product Intelligence"
-    )
+st.caption(
+    "Built with PyTorch, ResNet-50, DistilBERT "
+    "and Streamlit."
+)
