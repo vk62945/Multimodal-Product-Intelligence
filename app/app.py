@@ -33,7 +33,7 @@ if uploaded_image is not None:
         caption="Uploaded Product Image",
         width=400,
     )
-    
+
 st.subheader("2. Enter Product Information")
 
 product_text = st.text_input(
@@ -44,6 +44,25 @@ product_text = st.text_input(
 
 if product_text.strip():
     st.success("Product information entered.")
+
+st.subheader("3. Product Classification")
+
+predict_button = st.button(
+    "🔍 Predict Product Category",
+    type="primary",
+    use_container_width=True,
+)
+
+if predict_button:
+
+    if uploaded_image is None:
+        st.warning("Please upload a product image first.")
+
+    elif not product_text.strip():
+        st.warning("Please enter a product name or description.")
+
+    else:
+        st.success("Ready for prediction.")
 
 with st.sidebar:
 
