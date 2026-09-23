@@ -1,4 +1,16 @@
+import sys
+from pathlib import Path
+
 import streamlit as st
+
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+
+from src.inference import predict
 
 st.set_page_config(
     page_title="Multimodal Product Intelligence",
@@ -62,7 +74,20 @@ if predict_button:
         st.warning("Please enter a product name or description.")
 
     else:
-        st.success("Ready for prediction.")
+        with st.spinner("Analyzing product image and text..."):
+            try:
+                result = predict(
+                    image_path=uploaded_image,
+                    product_text=product_text,
+                    top_k=5,
+                )
+                st.success("Prediction completed successfully.")
+                st.session_state["prediction_result"] = result
+            except Exception as error:
+                st.error(
+                    "An error occurred while processing the product."
+                )
+                st.exception(error)
 
 with st.sidebar:
 
