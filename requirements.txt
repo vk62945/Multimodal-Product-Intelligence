@@ -1,12 +1,6 @@
-torch
-torchvision
-transformers
-pandas
-numpy
-scikit-learn
+torch==2.14.0
+torchvision==0.29.0
+transformers==5.16.1
+huggingface_hub==1.33.0
+streamlit==1.64.0
 Pillow
-tqdm
-matplotlib
-seaborn
-jupyter
-ipykernel

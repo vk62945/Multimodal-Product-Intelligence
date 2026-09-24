@@ -8,6 +8,9 @@ MODEL_DIR = PROJECT_ROOT / "models"
 FINAL_MODEL_PATH = MODEL_DIR / "multimodal_final.pth"
 MODEL_CONFIG_PATH = MODEL_DIR / "multimodal_final_config.json"
 
+MODEL_REPO_ID = "vk62945/multimodal-product-intelligence"
+MODEL_FILENAME = "multimodal_final.pth"
+
 NUM_CLASSES = 20
 
 IMAGE_SIZE = 224

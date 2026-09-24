@@ -1,43 +1,41 @@
 import torch
+from huggingface_hub import hf_hub_download
 
 from src.config import (
     DEVICE,
-    FINAL_MODEL_PATH,
-    NUM_CLASSES
+    MODEL_REPO_ID,
+    MODEL_FILENAME,
+    NUM_CLASSES,
 )
 
 from src.model import (
     create_image_encoder,
     DistilBERTTextEncoder,
-    MultimodalClassifier
+    MultimodalClassifier,
 )
 
 
 def load_model():
-    """
-    Create the production multimodal model,
-    load the trained checkpoint, and prepare
-    it for inference.
-    """
-
     image_encoder = create_image_encoder()
-
     text_encoder = DistilBERTTextEncoder()
 
     model = MultimodalClassifier(
         image_encoder=image_encoder,
         text_encoder=text_encoder,
-        num_classes=NUM_CLASSES
+        num_classes=NUM_CLASSES,
+    )
+
+    model_path = hf_hub_download(
+        repo_id=MODEL_REPO_ID,
+        filename=MODEL_FILENAME,
     )
 
     checkpoint = torch.load(
-        FINAL_MODEL_PATH,
-        map_location="cpu"
+        model_path,
+        map_location="cpu",
     )
 
-    model.load_state_dict(
-        checkpoint
-    )
+    model.load_state_dict(checkpoint)
 
     model = model.to(DEVICE)
 
