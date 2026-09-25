@@ -67,7 +67,8 @@ The system processes the image and text independently and combines their learned
                             |
                             v
                     Product Category
-       
+```
+
 ## 🏗️ Model Architecture
 
 ### Image Branch — ResNet-50
@@ -101,8 +102,9 @@ The two embeddings are projected into the same dimensional space:
 ```text
 Image Embedding: 2048 → 512
 Text Embedding:   768 → 512
+```
 
-📊 Model Performance
+## 📊 Model Performance
 Final Optimized Multimodal Model
 
 The final model selectively fine-tunes ResNet-50 Layer 4 while keeping the DistilBERT encoder frozen.
@@ -114,7 +116,7 @@ Weighted F1	99.58%
 Test Samples	6,459
 Test Errors	27
 
-🔍 Explainability
+## 🔍 Explainability
 
 The project includes explainability techniques for both image and text modalities.
 
@@ -130,7 +132,7 @@ Gradient × Embedding attribution is used to estimate the contribution of indivi
 
 These attribution values are interpreted as local sensitivity signals rather than causal explanations.
 
-📂 Dataset
+## 📂 Dataset
 
 The project uses the Fashion Product Images (Small) dataset.
 
@@ -165,7 +167,7 @@ Topwear
 Wallets
 Watches
 
-🛠️ Technology Stack
+## 🛠️ Technology Stack
 Python
 PyTorch
 Torchvision
@@ -179,7 +181,7 @@ NumPy
 Pandas
 Scikit-learn
 
-📁 Project Structure
+## 📁 Project Structure
 Multimodal-Product-Intelligence/
 │
 ├── app/
@@ -216,7 +218,7 @@ Multimodal-Product-Intelligence/
 ├── requirements.txt
 └── README.md
 
-🤗 Hugging Face Model Hosting
+## 🤗 Hugging Face Model Hosting
 
 The production model is hosted separately on Hugging Face Hub.
 
@@ -232,7 +234,7 @@ The application downloads the model using hf_hub_download() at runtime.
 
 This keeps the large model checkpoint out of the GitHub source repository.
 
-⚙️ Local Setup
+## ⚙️ Local Setup
 1. Clone the Repository
 git clone <https://github.com/vk62945/Multimodal-Product-Intelligence>
 cd Multimodal-Product-Intelligence
@@ -254,7 +256,7 @@ http://localhost:8501
 The production model is downloaded automatically from Hugging Face Hub when the application starts.
 
 deployment
-👨‍💻 Author
+## 👨‍💻 Author
 
 Vivek Kumar
 
