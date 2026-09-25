@@ -182,6 +182,7 @@ Pandas
 Scikit-learn
 
 ## 📁 Project Structure
+```text
 Multimodal-Product-Intelligence/
 │
 ├── app/
@@ -217,7 +218,7 @@ Multimodal-Product-Intelligence/
 ├── .gitignore
 ├── requirements.txt
 └── README.md
-
+```
 ## 🤗 Hugging Face Model Hosting
 
 The production model is hosted separately on Hugging Face Hub.
